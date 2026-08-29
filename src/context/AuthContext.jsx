@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -6,15 +6,13 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../services/firebase";
-
-export const AuthContext = createContext(null);
+import { AuthContext } from "./auth-context";
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Firebase'in oturum durumu değiştikçe (login/logout/sayfa yenileme) tetiklenir
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
       setLoading(false);
@@ -36,11 +34,5 @@ export function AuthProvider({ children }) {
 
   const value = { currentUser, loading, register, login, logout };
 
-  // loading true iken çocuk bileşenleri render etmiyoruz ki
-  // Firebase henüz oturum kontrolü bitirmeden yanlış yönlendirme olmasın
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }

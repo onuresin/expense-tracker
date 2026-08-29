@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@theme {
+  --color-navy-950: #0B1220;
+  --color-navy-900: #111A2E;
+  --color-navy-800: #1A2942;
+  --color-navy-700: #26374F;
+  --color-navy-600: #364A66;
+  --color-ivory: #F8F6F1;
+  --color-gold-400: #D4AF37;
+  --color-gold-500: #C9A227;
+  --color-gold-600: #A6841F;
+  --color-income-light: #0A6B32;
+  --color-income-dark: #22C55E;
+  --color-expense-light: #9F1B1B;
+  --color-expense-dark: #F87171;
+}
+
+:root {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-ivory text-navy-950 dark:bg-navy-950 dark:text-slate-100;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}

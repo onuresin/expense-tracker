@@ -17,7 +17,7 @@ export default function DebtList({ debts, onPay, onDelete }) {
 
   if (debts.length === 0) {
     return (
-      <div className="rounded-lg bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
+      <div className="rounded-lg border border-slate-200 bg-white p-6 text-center text-sm text-slate-500 shadow-sm dark:border-navy-800 dark:bg-navy-900 dark:text-slate-400">
         Kayıtlı borç/kredi kartı yok.
       </div>
     );
@@ -30,24 +30,27 @@ export default function DebtList({ debts, onPay, onDelete }) {
           ? Math.min(100, ((debt.totalAmount - debt.remainingAmount) / debt.totalAmount) * 100)
           : 0;
         return (
-          <div key={debt.id} className="rounded-lg bg-white p-4 shadow-sm">
+          <div
+            key={debt.id}
+            className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-navy-800 dark:bg-navy-900"
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-800">{debt.name}</p>
-                <p className="text-sm text-gray-500">
+                <p className="font-medium text-navy-950 dark:text-white">{debt.name}</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   Kalan: {formatCurrency(debt.remainingAmount)} / {formatCurrency(debt.totalAmount)}
                 </p>
               </div>
               <button
                 onClick={() => onDelete(debt.id)}
-                className="text-xs text-gray-400 hover:text-red-600"
+                className="text-xs text-slate-400 hover:text-expense-light dark:hover:text-expense-dark"
               >
                 Sil
               </button>
             </div>
 
-            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-100">
-              <div className="h-full bg-blue-600 transition-all" style={{ width: `${progress}%` }} />
+            <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-navy-800">
+              <div className="h-full bg-gold-500 transition-all" style={{ width: `${progress}%` }} />
             </div>
 
             {debt.remainingAmount > 0 && (
@@ -59,11 +62,11 @@ export default function DebtList({ debts, onPay, onDelete }) {
                   placeholder="Ödeme tutarı"
                   value={paymentInputs[debt.id] || ""}
                   onChange={(e) => handlePaymentChange(debt.id, e.target.value)}
-                  className="flex-1 rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+                  className="flex-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-navy-950 focus:border-gold-500 focus:outline-none dark:border-navy-700 dark:bg-navy-800 dark:text-white"
                 />
                 <button
                   onClick={() => handlePaySubmit(debt)}
-                  className="rounded-md bg-green-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-green-700"
+                  className="rounded-md bg-income-light px-3 py-1.5 text-sm font-medium text-white hover:opacity-90 dark:bg-income-dark dark:text-navy-950"
                 >
                   Ödeme Yap
                 </button>

@@ -3,16 +3,16 @@ import { formatCurrency, formatDate } from "../../utils/formatCurrency";
 export default function TransactionList({ transactions, onDelete }) {
   if (transactions.length === 0) {
     return (
-      <div className="rounded-lg bg-white p-8 text-center text-sm text-gray-500 shadow-sm">
+      <div className="rounded-lg border border-slate-200 bg-white p-8 text-center text-sm text-slate-500 shadow-sm dark:border-navy-800 dark:bg-navy-900 dark:text-slate-400">
         Henüz işlem eklenmedi.
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg bg-white shadow-sm">
+    <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm dark:border-navy-800 dark:bg-navy-900">
       <table className="w-full text-sm">
-        <thead className="bg-gray-50 text-left text-gray-500">
+        <thead className="bg-slate-50 text-left text-slate-500 dark:bg-navy-800 dark:text-slate-400">
           <tr>
             <th className="px-4 py-3">Tarih</th>
             <th className="px-4 py-3">Kategori</th>
@@ -21,32 +21,37 @@ export default function TransactionList({ transactions, onDelete }) {
             <th className="px-4 py-3"></th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-slate-100 dark:divide-navy-800">
           {transactions.map((t) => (
             <tr key={t.id}>
-              <td className="whitespace-nowrap px-4 py-3 text-gray-600">{formatDate(t.date)}</td>
+              <td className="whitespace-nowrap px-4 py-3 text-slate-600 dark:text-slate-300">
+                {formatDate(t.date)}
+              </td>
               <td className="whitespace-nowrap px-4 py-3">
-                <span className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-700">
+                <span className="rounded-full bg-slate-100 px-2 py-1 text-xs text-slate-700 dark:bg-navy-800 dark:text-slate-300">
                   {t.category}
                 </span>
                 {t.isRecurring && (
-                  <span className="ml-1 rounded-full bg-blue-50 px-2 py-1 text-xs text-blue-600">
+                  <span className="ml-1 rounded-full bg-gold-500/10 px-2 py-1 text-xs text-gold-600 dark:text-gold-400">
                     Tekrarlayan
                   </span>
                 )}
               </td>
-              <td className="px-4 py-3 text-gray-500">{t.description || "—"}</td>
+              <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{t.description || "—"}</td>
               <td
                 className={`whitespace-nowrap px-4 py-3 text-right font-medium ${
-                  t.type === "income" ? "text-green-600" : "text-red-600"
+                  t.type === "income"
+                    ? "text-income-light dark:text-income-dark"
+                    : "text-expense-light dark:text-expense-dark"
                 }`}
               >
-                {t.type === "income" ? "+" : "-"}{formatCurrency(t.amount)}
+                {t.type === "income" ? "+" : "-"}
+                {formatCurrency(t.amount)}
               </td>
               <td className="px-4 py-3 text-right">
                 <button
                   onClick={() => onDelete(t.id)}
-                  className="text-xs text-gray-400 hover:text-red-600"
+                  className="text-xs text-slate-400 hover:text-expense-light dark:hover:text-expense-dark"
                 >
                   Sil
                 </button>
