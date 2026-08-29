@@ -34,21 +34,23 @@ export function sumByPeriod(transactions, start) {
     );
 }
 
-const MONTH_LABELS = [
-  "Oca", "Şub", "Mar", "Nis", "May", "Haz",
-  "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara",
-];
+const MONTH_LABELS = {
+  tr: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+  en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+};
 
-// Son `monthCount` ayın gelir/gider toplamlarını aylara göre gruplar (trend grafiği için)
-export function buildMonthlyTrend(transactions, monthCount) {
+// Son `monthCount` ayin gelir/gider toplamlarini aylara gore gruplar (trend grafigi icin).
+// `language` ay kisaltmalarinin hangi dilde gosterilecegini belirler ("tr" | "en").
+export function buildMonthlyTrend(transactions, monthCount, language = "tr") {
   const now = new Date();
   const buckets = [];
+  const monthLabels = MONTH_LABELS[language] || MONTH_LABELS.tr;
 
   for (let i = monthCount - 1; i >= 0; i--) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     buckets.push({
       key: `${d.getFullYear()}-${d.getMonth()}`,
-      label: `${MONTH_LABELS[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`,
+      label: `${monthLabels[d.getMonth()]} ${String(d.getFullYear()).slice(2)}`,
       income: 0,
       expense: 0,
     });

@@ -5,29 +5,45 @@ import { getCategoryColorMap } from "../../utils/chartColors";
 import { buildCategoryBreakdown, startOfMonth } from "../../utils/dateHelpers";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { useTheme } from "../../hooks/useTheme";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export default function CategoryBreakdownChart({ transactions }) {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const data = useMemo(() => buildCategoryBreakdown(transactions, startOfMonth()), [transactions]);
   const colorMap = useMemo(() => getCategoryColorMap(EXPENSE_CATEGORIES, theme), [theme]);
 
   if (data.length === 0) {
     return (
       <div className="rounded-lg border border-slate-200 bg-white p-5 text-center text-sm text-slate-400 shadow-sm dark:border-navy-800 dark:bg-navy-900">
-        Bu ay için gider kaydı yok.
+        {t("dashboard.noExpenseThisMonth")}
       </div>
     );
   }
 
+  // Pie/Legend/Tooltip icin gorunen ismi (categoryLabel) secili dile cevirip
+  // ekliyoruz; renk anahtari (Cell fill) hala sabit kategori kodunu kullaniyor.
+  const localizedData = data.map((entry) => ({
+    ...entry,
+    categoryLabel: t(`categories.${entry.category}`),
+  }));
+
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-navy-800 dark:bg-navy-900">
       <h3 className="mb-4 text-sm font-semibold text-navy-950 dark:text-slate-100">
-        Bu Ay Kategori Dağılımı
+        {t("dashboard.categoryBreakdownTitle")}
       </h3>
       <ResponsiveContainer width="100%" height={260}>
         <PieChart>
-          <Pie data={data} dataKey="value" nameKey="category" innerRadius={60} outerRadius={95} paddingAngle={2}>
-            {data.map((entry) => (
+          <Pie
+            data={localizedData}
+            dataKey="value"
+            nameKey="categoryLabel"
+            innerRadius={60}
+            outerRadius={95}
+            paddingAngle={2}
+          >
+            {localizedData.map((entry) => (
               <Cell key={entry.category} fill={colorMap[entry.category] || "#94A3B8"} />
             ))}
           </Pie>

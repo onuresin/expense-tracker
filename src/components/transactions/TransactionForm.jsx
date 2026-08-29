@@ -4,8 +4,10 @@ import {
   INCOME_CATEGORIES,
   RECURRING_FREQUENCIES,
 } from "../../utils/categories";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export default function TransactionForm({ onSubmit }) {
+  const { t } = useLanguage();
   const [type, setType] = useState("expense");
   const [category, setCategory] = useState(EXPENSE_CATEGORIES[0]);
   const [amount, setAmount] = useState("");
@@ -63,7 +65,7 @@ export default function TransactionForm({ onSubmit }) {
               : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-navy-800 dark:text-slate-300"
           }`}
         >
-          Gelir
+          {t("transactions.income")}
         </button>
         <button
           type="button"
@@ -74,13 +76,13 @@ export default function TransactionForm({ onSubmit }) {
               : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-navy-800 dark:text-slate-300"
           }`}
         >
-          Gider
+          {t("transactions.expense")}
         </button>
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className={labelClass}>Tutar (₺)</label>
+          <label className={labelClass}>{t("transactions.amount")}</label>
           <input
             type="number"
             step="0.01"
@@ -92,7 +94,7 @@ export default function TransactionForm({ onSubmit }) {
           />
         </div>
         <div>
-          <label className={labelClass}>Tarih</label>
+          <label className={labelClass}>{t("transactions.date")}</label>
           <input
             type="date"
             required
@@ -104,18 +106,18 @@ export default function TransactionForm({ onSubmit }) {
       </div>
 
       <div>
-        <label className={labelClass}>Kategori</label>
+        <label className={labelClass}>{t("transactions.category")}</label>
         <select value={category} onChange={(e) => setCategory(e.target.value)} className={inputClass}>
           {categories.map((c) => (
             <option key={c} value={c}>
-              {c}
+              {t(`categories.${c}`)}
             </option>
           ))}
         </select>
       </div>
 
       <div>
-        <label className={labelClass}>Açıklama (opsiyonel)</label>
+        <label className={labelClass}>{t("transactions.description")}</label>
         <input
           type="text"
           value={description}
@@ -133,7 +135,7 @@ export default function TransactionForm({ onSubmit }) {
           className="h-4 w-4 rounded border-slate-300 text-gold-500 focus:ring-gold-500"
         />
         <label htmlFor="isRecurring" className="text-sm text-slate-700 dark:text-slate-300">
-          Tekrarlayan işlem
+          {t("transactions.recurringCheckbox")}
         </label>
         {isRecurring && (
           <select
@@ -143,7 +145,7 @@ export default function TransactionForm({ onSubmit }) {
           >
             {RECURRING_FREQUENCIES.map((f) => (
               <option key={f.value} value={f.value}>
-                {f.label}
+                {t(f.labelKey)}
               </option>
             ))}
           </select>
@@ -155,7 +157,7 @@ export default function TransactionForm({ onSubmit }) {
         disabled={isSubmitting}
         className="w-full rounded-md bg-gold-500 py-2 font-medium text-navy-950 transition hover:bg-gold-600 disabled:opacity-50"
       >
-        {isSubmitting ? "Ekleniyor..." : "İşlemi Ekle"}
+        {isSubmitting ? t("transactions.adding") : t("transactions.addButton")}
       </button>
     </form>
   );

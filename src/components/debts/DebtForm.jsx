@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export default function DebtForm({ onSubmit }) {
+  const { t } = useLanguage();
   const [name, setName] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,11 +30,11 @@ export default function DebtForm({ onSubmit }) {
     >
       <div className="min-w-[150px] flex-1">
         <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-          Borç adı
+          {t("debts.nameLabel")}
         </label>
         <input
           type="text"
-          placeholder="Örn. Kredi Kartı - Bonus"
+          placeholder={t("debts.namePlaceholder")}
           required
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -41,7 +43,7 @@ export default function DebtForm({ onSubmit }) {
       </div>
       <div className="w-40">
         <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-          Toplam tutar (₺)
+          {t("debts.totalAmountLabel")}
         </label>
         <input
           type="number"
@@ -58,7 +60,7 @@ export default function DebtForm({ onSubmit }) {
         disabled={isSubmitting}
         className="rounded-md bg-gold-500 px-4 py-2 text-sm font-medium text-navy-950 hover:bg-gold-600 disabled:opacity-50"
       >
-        Borç Ekle
+        {t("debts.addButton")}
       </button>
     </form>
   );

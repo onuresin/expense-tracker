@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ export default function Login() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -18,7 +20,7 @@ export default function Login() {
       await login(email, password);
       navigate("/");
     } catch {
-      setError("Giriş başarısız. E-posta veya şifreni kontrol et.");
+      setError(t("auth.login.error"));
     } finally {
       setIsSubmitting(false);
     }
@@ -27,7 +29,7 @@ export default function Login() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-ivory px-4 dark:bg-navy-950">
       <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-navy-800 dark:bg-navy-900">
-        <h1 className="mb-6 text-2xl font-bold text-navy-950 dark:text-white">Giriş Yap</h1>
+        <h1 className="mb-6 text-2xl font-bold text-navy-950 dark:text-white">{t("auth.login.title")}</h1>
 
         {error && (
           <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-expense-light dark:bg-red-950/40 dark:text-expense-dark">
@@ -38,7 +40,7 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-              E-posta
+              {t("auth.login.email")}
             </label>
             <input
               type="email"
@@ -51,7 +53,7 @@ export default function Login() {
 
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-              Şifre
+              {t("auth.login.password")}
             </label>
             <input
               type="password"
@@ -67,14 +69,14 @@ export default function Login() {
             disabled={isSubmitting}
             className="w-full rounded-md bg-gold-500 py-2 font-medium text-navy-950 transition hover:bg-gold-600 disabled:opacity-50"
           >
-            {isSubmitting ? "Giriş yapılıyor..." : "Giriş Yap"}
+            {isSubmitting ? t("auth.login.submitting") : t("auth.login.submit")}
           </button>
         </form>
 
         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
-          Hesabın yok mu?{" "}
+          {t("auth.login.noAccount")}{" "}
           <Link to="/register" className="font-medium text-gold-600 hover:underline dark:text-gold-400">
-            Kayıt ol
+            {t("auth.login.registerLink")}
           </Link>
         </p>
       </div>

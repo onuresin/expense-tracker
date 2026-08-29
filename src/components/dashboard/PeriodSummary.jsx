@@ -1,11 +1,13 @@
 import { formatCurrency } from "../../utils/formatCurrency";
 import { startOfToday, startOfWeek, startOfMonth, sumByPeriod } from "../../utils/dateHelpers";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export default function PeriodSummary({ transactions }) {
+  const { t } = useLanguage();
   const periods = [
-    { label: "Bugün", start: startOfToday() },
-    { label: "Bu Hafta", start: startOfWeek() },
-    { label: "Bu Ay", start: startOfMonth() },
+    { key: "today", label: t("dashboard.periodToday"), start: startOfToday() },
+    { key: "week", label: t("dashboard.periodWeek"), start: startOfWeek() },
+    { key: "month", label: t("dashboard.periodMonth"), start: startOfMonth() },
   ];
 
   return (
@@ -15,7 +17,7 @@ export default function PeriodSummary({ transactions }) {
         const net = income - expense;
         return (
           <div
-            key={period.label}
+            key={period.key}
             className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm dark:border-navy-800 dark:bg-navy-900"
           >
             <p className="text-sm text-slate-500 dark:text-slate-400">{period.label}</p>
@@ -30,7 +32,7 @@ export default function PeriodSummary({ transactions }) {
               {formatCurrency(net)}
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              Gelir {formatCurrency(income)} · Gider {formatCurrency(expense)}
+              {t("dashboard.incomeShort")} {formatCurrency(income)} · {t("dashboard.expenseShort")} {formatCurrency(expense)}
             </p>
           </div>
         );

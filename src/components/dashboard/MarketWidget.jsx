@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { fetchMarketRates, extractRate } from "../../services/marketDataService";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export default function MarketWidget() {
+  const { t } = useLanguage();
   const [rates, setRates] = useState(null);
-  const [error, setError] = useState("");
+  const [hasError, setHasError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -16,7 +18,7 @@ export default function MarketWidget() {
       })
       .catch(() => {
         if (cancelled) return;
-        setError("Döviz/altın verisi şu an alınamıyor.");
+        setHasError(true);
         setLoading(false);
       });
     return () => {
@@ -31,16 +33,16 @@ export default function MarketWidget() {
 
   return (
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-navy-800 dark:bg-navy-900">
-      <h3 className="mb-4 text-sm font-semibold text-navy-950 dark:text-slate-100">Güncel Piyasa (₺)</h3>
+      <h3 className="mb-4 text-sm font-semibold text-navy-950 dark:text-slate-100">{t("market.title")}</h3>
 
-      {loading && <p className="text-sm text-slate-400">Yükleniyor...</p>}
-      {error && <p className="text-sm text-slate-400">{error}</p>}
+      {loading && <p className="text-sm text-slate-400">{t("common.loading")}</p>}
+      {hasError && <p className="text-sm text-slate-400">{t("market.error")}</p>}
 
-      {!loading && !error && (
+      {!loading && !hasError && (
         <div className="grid grid-cols-3 gap-3 text-center">
           <RateTile label="USD" entry={usd} />
           <RateTile label="EUR" entry={eur} />
-          <RateTile label="22 Ayar Gram Altın" entry={gold} />
+          <RateTile label={t("market.goldLabel")} entry={gold} />
         </div>
       )}
     </div>

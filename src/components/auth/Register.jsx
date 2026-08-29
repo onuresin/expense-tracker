@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -9,6 +10,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register } = useAuth();
+  const { t } = useLanguage();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -16,11 +18,11 @@ export default function Register() {
     setError("");
 
     if (password !== confirmPassword) {
-      setError("Şifreler eşleşmiyor.");
+      setError(t("auth.register.errorMismatch"));
       return;
     }
     if (password.length < 6) {
-      setError("Şifre en az 6 karakter olmalı.");
+      setError(t("auth.register.errorLength"));
       return;
     }
 
@@ -30,9 +32,9 @@ export default function Register() {
       navigate("/");
     } catch (err) {
       if (err.code === "auth/email-already-in-use") {
-        setError("Bu e-posta zaten kayıtlı.");
+        setError(t("auth.register.errorInUse"));
       } else {
-        setError("Kayıt başarısız oldu. Tekrar dene.");
+        setError(t("auth.register.errorGeneric"));
       }
     } finally {
       setIsSubmitting(false);
@@ -42,7 +44,7 @@ export default function Register() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-ivory px-4 dark:bg-navy-950">
       <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-navy-800 dark:bg-navy-900">
-        <h1 className="mb-6 text-2xl font-bold text-navy-950 dark:text-white">Kayıt Ol</h1>
+        <h1 className="mb-6 text-2xl font-bold text-navy-950 dark:text-white">{t("auth.register.title")}</h1>
 
         {error && (
           <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-expense-light dark:bg-red-950/40 dark:text-expense-dark">
@@ -53,7 +55,7 @@ export default function Register() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-              E-posta
+              {t("auth.login.email")}
             </label>
             <input
               type="email"
@@ -66,7 +68,7 @@ export default function Register() {
 
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-              Şifre
+              {t("auth.login.password")}
             </label>
             <input
               type="password"
@@ -79,7 +81,7 @@ export default function Register() {
 
           <div>
             <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-              Şifre (Tekrar)
+              {t("auth.register.confirmPassword")}
             </label>
             <input
               type="password"
@@ -95,14 +97,14 @@ export default function Register() {
             disabled={isSubmitting}
             className="w-full rounded-md bg-gold-500 py-2 font-medium text-navy-950 transition hover:bg-gold-600 disabled:opacity-50"
           >
-            {isSubmitting ? "Kaydediliyor..." : "Kayıt Ol"}
+            {isSubmitting ? t("auth.register.submitting") : t("auth.register.submit")}
           </button>
         </form>
 
         <p className="mt-4 text-center text-sm text-slate-500 dark:text-slate-400">
-          Zaten hesabın var mı?{" "}
+          {t("auth.register.haveAccount")}{" "}
           <Link to="/login" className="font-medium text-gold-600 hover:underline dark:text-gold-400">
-            Giriş yap
+            {t("auth.register.loginLink")}
           </Link>
         </p>
       </div>

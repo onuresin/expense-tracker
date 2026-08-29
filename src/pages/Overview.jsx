@@ -4,24 +4,26 @@ import PeriodSummary from "../components/dashboard/PeriodSummary";
 import TrendChart from "../components/dashboard/TrendChart";
 import CategoryBreakdownChart from "../components/dashboard/CategoryBreakdownChart";
 import MarketWidget from "../components/dashboard/MarketWidget";
+import { useLanguage } from "../hooks/useLanguage";
 
 export default function Overview() {
   const { transactions, loading } = useTransactions();
+  const { t } = useLanguage();
 
-  const totalIncome = transactions.filter((t) => t.type === "income").reduce((s, t) => s + t.amount, 0);
-  const totalExpense = transactions.filter((t) => t.type === "expense").reduce((s, t) => s + t.amount, 0);
+  const totalIncome = transactions.filter((tx) => tx.type === "income").reduce((s, tx) => s + tx.amount, 0);
+  const totalExpense = transactions.filter((tx) => tx.type === "expense").reduce((s, tx) => s + tx.amount, 0);
   const balance = totalIncome - totalExpense;
 
   if (loading) {
-    return <p className="text-sm text-slate-400">Yükleniyor...</p>;
+    return <p className="text-sm text-slate-400">{t("common.loading")}</p>;
   }
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-semibold text-navy-950 dark:text-white">Genel Bakış</h1>
+        <h1 className="text-xl font-semibold text-navy-950 dark:text-white">{t("dashboard.title")}</h1>
         <p className="text-sm text-slate-500 dark:text-slate-400">
-          Genel bakiye:{" "}
+          {t("dashboard.overallBalance")}{" "}
           <span
             className={
               balance >= 0

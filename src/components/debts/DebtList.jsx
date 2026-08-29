@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { formatCurrency } from "../../utils/formatCurrency";
+import { useLanguage } from "../../hooks/useLanguage";
 
 export default function DebtList({ debts, onPay, onDelete }) {
+  const { t } = useLanguage();
   const [paymentInputs, setPaymentInputs] = useState({});
 
   function handlePaymentChange(debtId, value) {
@@ -18,7 +20,7 @@ export default function DebtList({ debts, onPay, onDelete }) {
   if (debts.length === 0) {
     return (
       <div className="rounded-lg border border-slate-200 bg-white p-6 text-center text-sm text-slate-500 shadow-sm dark:border-navy-800 dark:bg-navy-900 dark:text-slate-400">
-        Kayıtlı borç/kredi kartı yok.
+        {t("debts.empty")}
       </div>
     );
   }
@@ -38,14 +40,14 @@ export default function DebtList({ debts, onPay, onDelete }) {
               <div>
                 <p className="font-medium text-navy-950 dark:text-white">{debt.name}</p>
                 <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Kalan: {formatCurrency(debt.remainingAmount)} / {formatCurrency(debt.totalAmount)}
+                  {t("debts.remainingLabel")}: {formatCurrency(debt.remainingAmount)} / {formatCurrency(debt.totalAmount)}
                 </p>
               </div>
               <button
                 onClick={() => onDelete(debt.id)}
                 className="text-xs text-slate-400 hover:text-expense-light dark:hover:text-expense-dark"
               >
-                Sil
+                {t("common.delete")}
               </button>
             </div>
 
@@ -59,7 +61,7 @@ export default function DebtList({ debts, onPay, onDelete }) {
                   type="number"
                   step="0.01"
                   min="0"
-                  placeholder="Ödeme tutarı"
+                  placeholder={t("debts.paymentPlaceholder")}
                   value={paymentInputs[debt.id] || ""}
                   onChange={(e) => handlePaymentChange(debt.id, e.target.value)}
                   className="flex-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-navy-950 focus:border-gold-500 focus:outline-none dark:border-navy-700 dark:bg-navy-800 dark:text-white"
@@ -68,7 +70,7 @@ export default function DebtList({ debts, onPay, onDelete }) {
                   onClick={() => handlePaySubmit(debt)}
                   className="rounded-md bg-income-light px-3 py-1.5 text-sm font-medium text-white hover:opacity-90 dark:bg-income-dark dark:text-navy-950"
                 >
-                  Ödeme Yap
+                  {t("debts.payButton")}
                 </button>
               </div>
             )}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./useAuth";
+import { useLanguage } from "./useLanguage";
 import {
   addDebt,
   deleteDebt,
@@ -10,6 +11,7 @@ import { addTransaction } from "../services/transactionService";
 
 export function useDebts() {
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
   const [debts, setDebts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,13 +38,15 @@ export function useDebts() {
 
   // Ödeme yapıldığında hem borcun kalan tutarını azaltır
   // hem de bunu bir gider işlemi olarak transactions koleksiyonuna kaydeder.
+  // "debtPayment" sabit kategori anahtari - ekranda t("categories.debtPayment")
+  // ile secili dile gore gosterilir (bkz. src/utils/categories.js).
   async function handlePayDebt(debt, paymentAmount) {
     await payDebt(debt.id, paymentAmount);
     await addTransaction(currentUser.uid, {
       type: "expense",
-      category: "Borç Ödemesi",
+      category: "debtPayment",
       amount: paymentAmount,
-      description: `${debt.name} - borç ödemesi`,
+      description: `${debt.name} - ${t("debts.paymentDescriptionSuffix")}`,
       date: new Date().toISOString().slice(0, 10),
       isRecurring: false,
       debtId: debt.id,

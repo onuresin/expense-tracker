@@ -12,13 +12,18 @@ import {
 import { buildMonthlyTrend } from "../../utils/dateHelpers";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { useTheme } from "../../hooks/useTheme";
+import { useLanguage } from "../../hooks/useLanguage";
 
 const RANGE_OPTIONS = [3, 6, 12];
 
 export default function TrendChart({ transactions }) {
   const [months, setMonths] = useState(6);
   const { theme } = useTheme();
-  const data = useMemo(() => buildMonthlyTrend(transactions, months), [transactions, months]);
+  const { language, t } = useLanguage();
+  const data = useMemo(
+    () => buildMonthlyTrend(transactions, months, language),
+    [transactions, months, language]
+  );
 
   const incomeColor = theme === "dark" ? "#3987e5" : "#2a78d6";
   const expenseColor = theme === "dark" ? "#e66767" : "#e34948";
@@ -29,7 +34,7 @@ export default function TrendChart({ transactions }) {
     <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-navy-800 dark:bg-navy-900">
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h3 className="text-sm font-semibold text-navy-950 dark:text-slate-100">
-          Gelir / Gider Trendi
+          {t("dashboard.trendTitle")}
         </h3>
         <div className="flex gap-1">
           {RANGE_OPTIONS.map((option) => (
@@ -42,7 +47,7 @@ export default function TrendChart({ transactions }) {
                   : "bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-navy-800 dark:text-slate-300"
               }`}
             >
-              {option} Ay
+              {t("dashboard.monthRangeLabel").replace("{n}", option)}
             </button>
           ))}
         </div>
@@ -68,8 +73,8 @@ export default function TrendChart({ transactions }) {
             }}
           />
           <Legend wrapperStyle={{ fontSize: 12, color: textColor }} />
-          <Bar dataKey="income" name="Gelir" fill={incomeColor} radius={[4, 4, 0, 0]} />
-          <Bar dataKey="expense" name="Gider" fill={expenseColor} radius={[4, 4, 0, 0]} />
+          <Bar dataKey="income" name={t("dashboard.incomeShort")} fill={incomeColor} radius={[4, 4, 0, 0]} />
+          <Bar dataKey="expense" name={t("dashboard.expenseShort")} fill={expenseColor} radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
