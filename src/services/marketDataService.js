@@ -1,15 +1,25 @@
 // genelpara.com ücretsiz, API-key gerektirmeyen döviz/altın servisi.
-// Resmi/dokümante bir şema garantisi olmadığı için (üçüncü parti, sınırlı dokümantasyon),
-// birkaç olası alan adını deniyoruz ve ham veriyi konsola basıyoruz ki
-// ilk çalıştırmada gerçek şekli görüp gerekirse extractRate çağrılarını güncelleyelim.
-const ENDPOINT = "https://api.genelpara.com/embed/para-birimleri.json";
+// "doviz" listesi USD/EUR gibi kurları veriyor. "altin" listesi ise gram altın
+// (has/24 ayar) değil, kuyumcu tipi 14/18/22 ayar altın fiyatlarını sayısal
+// kodlarla veriyor ("14", "18", "22") - isim alanı yok. Üç değerin saflık oranına
+// göre geri hesaplanan karşılıkları birbirine çok yakın çıktığı için bu yorum
+// doğrulandı. Bu yüzden UI'da "Gram Altın" yerine "22 Ayar Altın" olarak
+// gösteriyoruz (22 ayar, has'a en yakın ve en çok işlem gören tür).
+const DOVIZ_ENDPOINT = "https://api.genelpara.com/json/?list=doviz&sembol=all";
+const ALTIN_ENDPOINT = "https://api.genelpara.com/json/?list=altin&sembol=all";
 
-export async function fetchMarketRates() {
-  const response = await fetch(ENDPOINT);
+async function fetchList(url) {
+  const response = await fetch(url);
   if (!response.ok) {
     throw new Error("Piyasa verisi alınamadı");
   }
-  return response.json();
+  const payload = await response.json();
+  return payload?.data || {};
+}
+
+export async function fetchMarketRates() {
+  const [doviz, altin] = await Promise.all([fetchList(DOVIZ_ENDPOINT), fetchList(ALTIN_ENDPOINT)]);
+  return { ...doviz, ...altin };
 }
 
 export function extractRate(data, candidateKeys) {

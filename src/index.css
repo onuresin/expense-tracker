@@ -27,5 +27,43 @@
 
 body {
   @apply bg-ivory text-navy-950 dark:bg-navy-950 dark:text-slate-100;
-  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Tema (acik/koyu) degisiminde arkaplan, yazi ve border renklerinin
+   tum sayfada (sidebar dahil) yumusak gecis yapmasi icin genel kural.
+   Ozel bir "transition" utility'si tasiyan elemanlar (orn. Tailwind'in
+   .transition sinifi) kendi kurallarini kullanmaya devam eder, cunku
+   sinif secicisi evrensel (*) seciciden daha spesifiktir. */
+@media (prefers-reduced-motion: no-preference) {
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, border-color, color, fill, stroke;
+    transition-duration: 200ms;
+    transition-timing-function: ease;
+  }
+}
+
+/* Sayfalar arasi (Genel Bakis <-> Islemler <-> Borclar) gecis animasyonu.
+   AppLayout, Outlet'i saran div'e route degisince yeni bir "key" verir;
+   React bu div'i yeniden monte eder ve asagidaki animasyon calisir. */
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-fade {
+  animation: page-fade-in 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-fade {
+    animation: none;
+  }
 }
