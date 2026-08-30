@@ -39,7 +39,7 @@ export default function MarketWidget() {
       {hasError && <p className="text-sm text-slate-400">{t("market.error")}</p>}
 
       {!loading && !hasError && (
-        <div className="grid grid-cols-3 gap-3 text-center">
+        <div className="grid grid-cols-1 gap-3 text-center sm:grid-cols-3">
           <RateTile label="USD" entry={usd} />
           <RateTile label="EUR" entry={eur} />
           <RateTile label={t("market.goldLabel")} entry={gold} />

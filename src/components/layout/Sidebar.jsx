@@ -2,7 +2,11 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useTheme } from "../../hooks/useTheme";
 import { useLanguage } from "../../hooks/useLanguage";
+import BrandMark from "./BrandMark";
 
+// Bu sidebar artik sadece lg (1024px) ve uzeri genisliklerde gorunuyor
+// ("hidden lg:flex"). Daha dar ekranlarda navigasyonu MobileHeader +
+// MobileTabBar bilesenleri devraliyor (bkz. AppLayout.jsx).
 export default function Sidebar() {
   const { currentUser, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -15,7 +19,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="sticky top-0 flex h-screen w-60 flex-shrink-0 flex-col bg-navy-950 text-slate-200">
+    <aside className="sticky top-0 hidden h-screen w-60 flex-shrink-0 flex-col bg-navy-950 text-slate-200 lg:flex">
       <div className="flex items-center gap-3 px-5 py-6">
         <BrandMark />
         <div>
@@ -73,31 +77,5 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
-  );
-}
-
-// Basit, tek renkli (altın) bir marka simgesi - yükselen finansal grafiği temsil eden
-// üç çubuk. Harici bir dosya/font gerektirmez, SVG olduğu için her boyutta net görünür.
-function BrandMark() {
-  return (
-    <svg
-      width="36"
-      height="36"
-      viewBox="0 0 36 36"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <rect width="36" height="36" rx="10" fill="url(#brandGradient)" />
-      <rect x="9" y="19" width="4" height="9" rx="1" fill="#0B1220" />
-      <rect x="16" y="14" width="4" height="14" rx="1" fill="#0B1220" />
-      <rect x="23" y="8" width="4" height="20" rx="1" fill="#0B1220" />
-      <defs>
-        <linearGradient id="brandGradient" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#D4AF37" />
-          <stop offset="1" stopColor="#A6841F" />
-        </linearGradient>
-      </defs>
-    </svg>
   );
 }
