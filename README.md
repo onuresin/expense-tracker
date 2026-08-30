@@ -9,6 +9,8 @@ live valuation, multi-currency display, and analytics/reporting via Recharts.
 > The app itself is fully bilingual (Turkish/English, switchable from the UI) —
 > the screenshots and copy in this README are just for the repo.
 
+![App demo](docs/demo.gif)
+
 ## Features
 
 - **Transactions** — manual income/expense entries with category, description,
