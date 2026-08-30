@@ -92,6 +92,11 @@ export default function TransactionForm({ onSubmit }) {
             onChange={(e) => setAmount(e.target.value)}
             className={inputClass}
           />
+          {/* Tutarlar her zaman TL olarak saklaniyor (bkz. CurrencyContext.jsx) -
+              gosterge para birimi (sidebar'daki secici) sadece raporlarda
+              donusturuluyor. Bunu burada acikca belirtmezsek, orn. EUR
+              seciliyken bu alanin hala (Amount ₺) yazmasi hata gibi gorunuyor. */}
+          <p className="mt-1 text-xs text-slate-400">{t("transactions.amountHelper")}</p>
         </div>
         <div>
           <label className={labelClass}>{t("transactions.date")}</label>

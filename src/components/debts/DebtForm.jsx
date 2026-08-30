@@ -54,6 +54,7 @@ export default function DebtForm({ onSubmit }) {
           onChange={(e) => setTotalAmount(e.target.value)}
           className={inputClass}
         />
+        <p className="mt-1 text-xs text-slate-400">{t("debts.totalAmountHelper")}</p>
       </div>
       <button
         type="submit"
