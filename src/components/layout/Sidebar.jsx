@@ -17,6 +17,7 @@ export default function Sidebar() {
     { to: "/", label: t("sidebar.overview"), end: true },
     { to: "/islemler", label: t("sidebar.transactions") },
     { to: "/borclar", label: t("sidebar.debts") },
+    { to: "/varliklar", label: t("sidebar.assets") },
   ];
 
   return (

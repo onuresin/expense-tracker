@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useLanguage } from "../../hooks/useLanguage";
-import { OverviewIcon, TransactionsIcon, DebtsIcon } from "./NavIcons";
+import { OverviewIcon, TransactionsIcon, DebtsIcon, AssetsIcon } from "./NavIcons";
 
 const NAV_ITEMS = [
   { to: "/", key: "overview", end: true, Icon: OverviewIcon },
   { to: "/islemler", key: "transactions", Icon: TransactionsIcon },
   { to: "/borclar", key: "debts", Icon: DebtsIcon },
+  { to: "/varliklar", key: "assets", Icon: AssetsIcon },
 ];
 
 // Sadece lg altinda gorunen, ekranin altina sabitlenmis navigasyon bari.
@@ -21,6 +22,7 @@ export default function MobileTabBar() {
     overview: t("sidebar.overview"),
     transactions: t("sidebar.transactions"),
     debts: t("sidebar.debts"),
+    assets: t("sidebar.assets"),
   };
 
   return (

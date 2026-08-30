@@ -110,6 +110,10 @@ export function CurrencyProvider({ children }) {
     availableCurrencies,
     selectCurrency,
     formatAmount,
+    // Ham kur verisi - AssetList gibi TL disinda bir "birim fiyati" (orn.
+    // gram altin) hesaplamasi gereken yerler icin de disari aciyoruz, boylece
+    // ikinci bir genelpara.com cagrisi yapmalarina gerek kalmiyor.
+    rates,
     ratesLoading: loading,
     ratesError: hasError,
   };

@@ -50,3 +50,23 @@ export function DebtsIcon(props) {
     </svg>
   );
 }
+
+// Ust uste bindirilmis elips + gövde ile "bozuk para yigini" izlenimi veren
+// basit bir sekil - varlıklar (altin/gumus/doviz) sayfasi icin.
+export function AssetsIcon(props) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <ellipse cx="12" cy="6.5" rx="7" ry="2.8" />
+      <path d="M5 6.5v5c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-5" />
+      <path d="M5 11.5v5c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-5" />
+    </svg>
+  );
+}
