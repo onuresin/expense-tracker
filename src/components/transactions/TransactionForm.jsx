@@ -100,12 +100,6 @@ export default function TransactionForm({ onSubmit }) {
             onChange={(e) => setAmount(e.target.value)}
             className={inputClass}
           />
-          {/* Kullanici hangi para birimini secmisse (sidebar'daki secici) bu
-              alanda AYNI birimde tutar giriyor - gorunum tutarli oluyor.
-              Kaydederken TL'ye ceviriyoruz (bkz. convertToTRY), bu yuzden
-              gecmis kur degisirse bu islemin gosterilen degeri de degisebilir -
-              o yuzden burada aciklamasi var. */}
-          <p className="mt-1 text-xs text-slate-400">{t("transactions.amountHelper")}</p>
         </div>
         <div>
           <label className={labelClass}>{t("transactions.date")}</label>
