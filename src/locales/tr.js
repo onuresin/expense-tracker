@@ -12,6 +12,7 @@ export const tr = {
     debts: "Borçlar",
     darkTheme: "Koyu Tema",
     lightTheme: "Açık Tema",
+    currencyLabel: "Para Birimi",
     logout: "Çıkış Yap",
   },
   auth: {
@@ -44,6 +45,7 @@ export const tr = {
     income: "Gelir",
     expense: "Gider",
     amount: "Tutar (₺)",
+    amountColumn: "Tutar",
     date: "Tarih",
     category: "Kategori",
     description: "Açıklama (opsiyonel)",

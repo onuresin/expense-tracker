@@ -1,9 +1,10 @@
-import { formatCurrency } from "../../utils/formatCurrency";
 import { startOfToday, startOfWeek, startOfMonth, sumByPeriod } from "../../utils/dateHelpers";
 import { useLanguage } from "../../hooks/useLanguage";
+import { useCurrency } from "../../hooks/useCurrency";
 
 export default function PeriodSummary({ transactions }) {
   const { t } = useLanguage();
+  const { formatAmount } = useCurrency();
   const periods = [
     { key: "today", label: t("dashboard.periodToday"), start: startOfToday() },
     { key: "week", label: t("dashboard.periodWeek"), start: startOfWeek() },
@@ -29,10 +30,10 @@ export default function PeriodSummary({ transactions }) {
               }`}
             >
               {net >= 0 ? "+" : ""}
-              {formatCurrency(net)}
+              {formatAmount(net)}
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              {t("dashboard.incomeShort")} {formatCurrency(income)} · {t("dashboard.expenseShort")} {formatCurrency(expense)}
+              {t("dashboard.incomeShort")} {formatAmount(income)} · {t("dashboard.expenseShort")} {formatAmount(expense)}
             </p>
           </div>
         );

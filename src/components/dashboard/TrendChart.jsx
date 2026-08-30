@@ -10,9 +10,9 @@ import {
   YAxis,
 } from "recharts";
 import { buildMonthlyTrend } from "../../utils/dateHelpers";
-import { formatCurrency } from "../../utils/formatCurrency";
 import { useTheme } from "../../hooks/useTheme";
 import { useLanguage } from "../../hooks/useLanguage";
+import { useCurrency } from "../../hooks/useCurrency";
 
 const RANGE_OPTIONS = [3, 6, 12];
 
@@ -20,6 +20,7 @@ export default function TrendChart({ transactions }) {
   const [months, setMonths] = useState(6);
   const { theme } = useTheme();
   const { language, t } = useLanguage();
+  const { formatAmount } = useCurrency();
   const data = useMemo(
     () => buildMonthlyTrend(transactions, months, language),
     [transactions, months, language]
@@ -64,7 +65,7 @@ export default function TrendChart({ transactions }) {
           />
           <YAxis tick={{ fill: textColor, fontSize: 12 }} axisLine={false} tickLine={false} width={40} />
           <Tooltip
-            formatter={(value) => formatCurrency(value)}
+            formatter={(value) => formatAmount(value)}
             contentStyle={{
               background: theme === "dark" ? "#111A2E" : "#ffffff",
               border: `1px solid ${gridColor}`,

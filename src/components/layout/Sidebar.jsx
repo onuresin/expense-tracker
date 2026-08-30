@@ -3,6 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useTheme } from "../../hooks/useTheme";
 import { useLanguage } from "../../hooks/useLanguage";
 import BrandMark from "./BrandMark";
+import CurrencyDropdown from "./CurrencyDropdown";
 
 // Bu sidebar artik sadece lg (1024px) ve uzeri genisliklerde gorunuyor
 // ("hidden lg:flex"). Daha dar ekranlarda navigasyonu MobileHeader +
@@ -47,7 +48,7 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="space-y-3 border-t border-navy-800 px-4 py-4">
+      <div className="space-y-2 border-t border-navy-800 px-4 py-4">
         <div className="flex gap-2">
           <button
             onClick={toggleTheme}
@@ -66,7 +67,9 @@ export default function Sidebar() {
           </button>
         </div>
 
-        <div>
+        <CurrencyDropdown />
+
+        <div className="pt-1">
           <p className="truncate text-xs text-slate-400">{currentUser?.email}</p>
           <button
             onClick={logout}

@@ -3,13 +3,14 @@ import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from "recha
 import { EXPENSE_CATEGORIES } from "../../utils/categories";
 import { getCategoryColorMap } from "../../utils/chartColors";
 import { buildCategoryBreakdown, startOfMonth } from "../../utils/dateHelpers";
-import { formatCurrency } from "../../utils/formatCurrency";
 import { useTheme } from "../../hooks/useTheme";
 import { useLanguage } from "../../hooks/useLanguage";
+import { useCurrency } from "../../hooks/useCurrency";
 
 export default function CategoryBreakdownChart({ transactions }) {
   const { theme } = useTheme();
   const { t } = useLanguage();
+  const { formatAmount } = useCurrency();
   const data = useMemo(() => buildCategoryBreakdown(transactions, startOfMonth()), [transactions]);
   const colorMap = useMemo(() => getCategoryColorMap(EXPENSE_CATEGORIES, theme), [theme]);
 
@@ -47,7 +48,7 @@ export default function CategoryBreakdownChart({ transactions }) {
               <Cell key={entry.category} fill={colorMap[entry.category] || "#94A3B8"} />
             ))}
           </Pie>
-          <Tooltip formatter={(value) => formatCurrency(value)} />
+          <Tooltip formatter={(value) => formatAmount(value)} />
           <Legend wrapperStyle={{ fontSize: 12 }} />
         </PieChart>
       </ResponsiveContainer>

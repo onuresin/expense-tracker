@@ -1,14 +1,16 @@
 import { useTransactions } from "../hooks/useTransactions";
-import { formatCurrency } from "../utils/formatCurrency";
+
 import PeriodSummary from "../components/dashboard/PeriodSummary";
 import TrendChart from "../components/dashboard/TrendChart";
 import CategoryBreakdownChart from "../components/dashboard/CategoryBreakdownChart";
 import MarketWidget from "../components/dashboard/MarketWidget";
 import { useLanguage } from "../hooks/useLanguage";
+import { useCurrency } from "../hooks/useCurrency";
 
 export default function Overview() {
   const { transactions, loading } = useTransactions();
   const { t } = useLanguage();
+  const { formatAmount } = useCurrency();
 
   const totalIncome = transactions.filter((tx) => tx.type === "income").reduce((s, tx) => s + tx.amount, 0);
   const totalExpense = transactions.filter((tx) => tx.type === "expense").reduce((s, tx) => s + tx.amount, 0);
@@ -31,7 +33,7 @@ export default function Overview() {
                 : "font-medium text-expense-light dark:text-expense-dark"
             }
           >
-            {formatCurrency(balance)}
+            {formatAmount(balance)}
           </span>
         </p>
       </div>

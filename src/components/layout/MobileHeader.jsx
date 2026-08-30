@@ -3,6 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useTheme } from "../../hooks/useTheme";
 import { useLanguage } from "../../hooks/useLanguage";
 import BrandMark from "./BrandMark";
+import CurrencyDropdown from "./CurrencyDropdown";
 
 // Sadece lg altinda (telefon/tablet) gorunen ince ust bar. Ana navigasyon
 // buradan degil, alttaki MobileTabBar'dan yapiliyor - burada sadece marka
@@ -83,6 +84,8 @@ export default function MobileHeader() {
             <span>{language === "tr" ? "English" : "Türkçe"}</span>
             <span className="font-semibold">{language === "tr" ? "EN" : "TR"}</span>
           </button>
+
+          <CurrencyDropdown />
 
           <button
             onClick={logout}

@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { formatCurrency } from "../../utils/formatCurrency";
 import { useLanguage } from "../../hooks/useLanguage";
+import { useCurrency } from "../../hooks/useCurrency";
 
 export default function DebtList({ debts, onPay, onDelete }) {
   const { t } = useLanguage();
+  const { formatAmount } = useCurrency();
   const [paymentInputs, setPaymentInputs] = useState({});
 
   function handlePaymentChange(debtId, value) {
@@ -40,7 +41,7 @@ export default function DebtList({ debts, onPay, onDelete }) {
               <div>
                 <p className="font-medium text-navy-950 dark:text-white">{debt.name}</p>
                 <p className="text-sm text-slate-500 dark:text-slate-400">
-                  {t("debts.remainingLabel")}: {formatCurrency(debt.remainingAmount)} / {formatCurrency(debt.totalAmount)}
+                  {t("debts.remainingLabel")}: {formatAmount(debt.remainingAmount)} / {formatAmount(debt.totalAmount)}
                 </p>
               </div>
               <button

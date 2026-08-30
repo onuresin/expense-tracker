@@ -12,6 +12,7 @@ export const en = {
     debts: "Debts",
     darkTheme: "Dark Theme",
     lightTheme: "Light Theme",
+    currencyLabel: "Currency",
     logout: "Log Out",
   },
   auth: {
@@ -44,6 +45,7 @@ export const en = {
     income: "Income",
     expense: "Expense",
     amount: "Amount (₺)",
+    amountColumn: "Amount",
     date: "Date",
     category: "Category",
     description: "Description (optional)",

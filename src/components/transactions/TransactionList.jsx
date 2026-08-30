@@ -1,8 +1,10 @@
-import { formatCurrency, formatDate } from "../../utils/formatCurrency";
+import { formatDate } from "../../utils/formatCurrency";
 import { useLanguage } from "../../hooks/useLanguage";
+import { useCurrency } from "../../hooks/useCurrency";
 
 export default function TransactionList({ transactions, onDelete }) {
   const { t, language } = useLanguage();
+  const { formatAmount } = useCurrency();
 
   if (transactions.length === 0) {
     return (
@@ -20,7 +22,7 @@ export default function TransactionList({ transactions, onDelete }) {
             <th className="px-4 py-3">{t("transactions.date")}</th>
             <th className="px-4 py-3">{t("transactions.category")}</th>
             <th className="px-4 py-3">{t("transactions.descriptionColumn")}</th>
-            <th className="px-4 py-3 text-right">{t("transactions.amount")}</th>
+            <th className="px-4 py-3 text-right">{t("transactions.amountColumn")}</th>
             <th className="px-4 py-3"></th>
           </tr>
         </thead>
@@ -49,7 +51,7 @@ export default function TransactionList({ transactions, onDelete }) {
                 }`}
               >
                 {item.type === "income" ? "+" : "-"}
-                {formatCurrency(item.amount)}
+                {formatAmount(item.amount)}
               </td>
               <td className="px-4 py-3 text-right">
                 <button

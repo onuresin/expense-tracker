@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout";
 import Login from "./components/auth/Login";
@@ -14,21 +15,23 @@ export default function App() {
   return (
     <LanguageProvider>
       <ThemeProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route element={<ProtectedRoute />}>
-                <Route element={<AppLayout />}>
-                  <Route path="/" element={<Overview />} />
-                  <Route path="/islemler" element={<TransactionsPage />} />
-                  <Route path="/borclar" element={<DebtsPage />} />
+        <CurrencyProvider>
+          <BrowserRouter>
+            <AuthProvider>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<AppLayout />}>
+                    <Route path="/" element={<Overview />} />
+                    <Route path="/islemler" element={<TransactionsPage />} />
+                    <Route path="/borclar" element={<DebtsPage />} />
+                  </Route>
                 </Route>
-              </Route>
-            </Routes>
-          </AuthProvider>
-        </BrowserRouter>
+              </Routes>
+            </AuthProvider>
+          </BrowserRouter>
+        </CurrencyProvider>
       </ThemeProvider>
     </LanguageProvider>
   );
