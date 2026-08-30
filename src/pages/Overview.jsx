@@ -9,7 +9,7 @@ import { useCurrency } from "../hooks/useCurrency";
 
 export default function Overview() {
   const { transactions, loading } = useTransactions();
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
   const { formatAmount } = useCurrency();
 
   const totalIncome = transactions.filter((tx) => tx.type === "income").reduce((s, tx) => s + tx.amount, 0);
@@ -41,10 +41,16 @@ export default function Overview() {
       <PeriodSummary transactions={transactions} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
+        {/* Guncel Piyasa karti TL cinsinden ve TR piyasasina ozel oldugu icin
+            (USD/EUR/altin hep TL karsiligiyla gosteriliyor) sadece dil TR
+            iken anlamli - EN'de bu kartı ceviripseçili para birimine gore
+            yeniden hesaplamak yerine, kapsamı büyütmemek için basitçe
+            gizliyoruz. Kart yokken TrendChart bosluk birakmasin diye tam
+            genisligi kaplasin. */}
+        <div className={language === "tr" ? "lg:col-span-2" : "lg:col-span-3"}>
           <TrendChart transactions={transactions} />
         </div>
-        <MarketWidget />
+        {language === "tr" && <MarketWidget />}
       </div>
 
       <CategoryBreakdownChart transactions={transactions} />
