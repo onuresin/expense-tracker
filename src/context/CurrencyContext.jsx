@@ -105,11 +105,26 @@ export function CurrencyProvider({ children }) {
     }).format(converted);
   }
 
+  // formatAmount'in tersi: kullanicinin SECILI PARA BIRIMINDE girdigi bir
+  // tutari (orn. EUR secilesken formda "100" yazmasi) TL'ye cevirir - boylece
+  // Firestore'da her zaman TL saklama kuralini bozmadan, kullanici istedigi
+  // gibi hangi para biriminde goruyorsa o birimde veri girebiliyor. Kur o an
+  // alinamiyorsa (guvenli varsayilan) girilen sayiyi degistirmeden TL kabul
+  // ediyoruz - ayni formatAmount'taki fallback mantigi.
+  function convertToTRY(amountInSelectedCurrency) {
+    const safeAmount = amountInSelectedCurrency || 0;
+    if (currency === "TRY") return safeAmount;
+    const rate = extractRate(rates, [currency])?.satis;
+    if (!rate) return safeAmount;
+    return safeAmount * Number(rate);
+  }
+
   const value = {
     currency,
     availableCurrencies,
     selectCurrency,
     formatAmount,
+    convertToTRY,
     // Ham kur verisi - AssetList gibi TL disinda bir "birim fiyati" (orn.
     // gram altin) hesaplamasi gereken yerler icin de disari aciyoruz, boylece
     // ikinci bir genelpara.com cagrisi yapmalarina gerek kalmiyor.

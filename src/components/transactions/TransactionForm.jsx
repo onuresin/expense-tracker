@@ -5,9 +5,11 @@ import {
   RECURRING_FREQUENCIES,
 } from "../../utils/categories";
 import { useLanguage } from "../../hooks/useLanguage";
+import { useCurrency } from "../../hooks/useCurrency";
 
 export default function TransactionForm({ onSubmit }) {
   const { t } = useLanguage();
+  const { currency, convertToTRY } = useCurrency();
   const [type, setType] = useState("expense");
   const [category, setCategory] = useState(EXPENSE_CATEGORIES[0]);
   const [amount, setAmount] = useState("");
@@ -36,7 +38,11 @@ export default function TransactionForm({ onSubmit }) {
       await onSubmit({
         type,
         category,
-        amount: Number(amount),
+        // Kullanici tutari secili para biriminde giriyor (formdaki etiket ve
+        // yardimci metin de bunu gosteriyor); TL'ye cevirip oyle kaydediyoruz
+        // - boylece uygulamanin geri kalani (raporlar, toplam bakiye) hep TL
+        // uzerinden calismaya devam ediyor.
+        amount: convertToTRY(Number(amount)),
         description,
         date,
         isRecurring,
@@ -82,7 +88,9 @@ export default function TransactionForm({ onSubmit }) {
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className={labelClass}>{t("transactions.amount")}</label>
+          <label className={labelClass}>
+            {t("transactions.amount")} ({currency})
+          </label>
           <input
             type="number"
             step="0.01"
@@ -92,10 +100,11 @@ export default function TransactionForm({ onSubmit }) {
             onChange={(e) => setAmount(e.target.value)}
             className={inputClass}
           />
-          {/* Tutarlar her zaman TL olarak saklaniyor (bkz. CurrencyContext.jsx) -
-              gosterge para birimi (sidebar'daki secici) sadece raporlarda
-              donusturuluyor. Bunu burada acikca belirtmezsek, orn. EUR
-              seciliyken bu alanin hala (Amount ₺) yazmasi hata gibi gorunuyor. */}
+          {/* Kullanici hangi para birimini secmisse (sidebar'daki secici) bu
+              alanda AYNI birimde tutar giriyor - gorunum tutarli oluyor.
+              Kaydederken TL'ye ceviriyoruz (bkz. convertToTRY), bu yuzden
+              gecmis kur degisirse bu islemin gosterilen degeri de degisebilir -
+              o yuzden burada aciklamasi var. */}
           <p className="mt-1 text-xs text-slate-400">{t("transactions.amountHelper")}</p>
         </div>
         <div>

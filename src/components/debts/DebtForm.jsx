@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useLanguage } from "../../hooks/useLanguage";
+import { useCurrency } from "../../hooks/useCurrency";
 
 export default function DebtForm({ onSubmit }) {
   const { t } = useLanguage();
+  const { currency, convertToTRY } = useCurrency();
   const [name, setName] = useState("");
   const [totalAmount, setTotalAmount] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,7 +17,7 @@ export default function DebtForm({ onSubmit }) {
 
     setIsSubmitting(true);
     try {
-      await onSubmit({ name, totalAmount: Number(totalAmount) });
+      await onSubmit({ name, totalAmount: convertToTRY(Number(totalAmount)) });
       setName("");
       setTotalAmount("");
     } finally {
@@ -43,7 +45,7 @@ export default function DebtForm({ onSubmit }) {
       </div>
       <div className="w-40">
         <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-          {t("debts.totalAmountLabel")}
+          {t("debts.totalAmountLabel")} ({currency})
         </label>
         <input
           type="number"

@@ -4,7 +4,7 @@ import { useCurrency } from "../../hooks/useCurrency";
 
 export default function DebtList({ debts, onPay, onDelete }) {
   const { t } = useLanguage();
-  const { formatAmount } = useCurrency();
+  const { currency, formatAmount, convertToTRY } = useCurrency();
   const [paymentInputs, setPaymentInputs] = useState({});
 
   function handlePaymentChange(debtId, value) {
@@ -14,7 +14,9 @@ export default function DebtList({ debts, onPay, onDelete }) {
   async function handlePaySubmit(debt) {
     const amount = Number(paymentInputs[debt.id]);
     if (!amount || amount <= 0) return;
-    await onPay(debt, amount);
+    // Odeme de diger tutar alanlari gibi secili para biriminde giriliyor,
+    // TL'ye cevirip oyle gonderiyoruz (bkz. CurrencyContext.convertToTRY).
+    await onPay(debt, convertToTRY(amount));
     setPaymentInputs((prev) => ({ ...prev, [debt.id]: "" }));
   }
 
@@ -62,7 +64,7 @@ export default function DebtList({ debts, onPay, onDelete }) {
                   type="number"
                   step="0.01"
                   min="0"
-                  placeholder={t("debts.paymentPlaceholder")}
+                  placeholder={`${t("debts.paymentPlaceholder")} (${currency})`}
                   value={paymentInputs[debt.id] || ""}
                   onChange={(e) => handlePaymentChange(debt.id, e.target.value)}
                   className="flex-1 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm text-navy-950 focus:border-gold-500 focus:outline-none dark:border-navy-700 dark:bg-navy-800 dark:text-white"
